@@ -40,23 +40,17 @@ int main(int argc, char *argv[]) {
         total += gnum;
       }
 
-      if (strstr(token, "red")) {
-        if (atoi(&token[1]) > RED_LIMIT) {
-          total -= gnum;
-          break;
-        }
+      if (strstr(token, "red") && atoi(&token[1]) > RED_LIMIT) {
+        total -= gnum;
+        break;
       }
-      if (strstr(token, "green")) {
-        if (atoi(&token[1]) > GREEN_LIMIT) {
-          total -= gnum;
-          break;
-        }
+      if (strstr(token, "green") && atoi(&token[1]) > GREEN_LIMIT) {
+        total -= gnum;
+        break;
       }
-      if (strstr(token, "blue")) {
-        if (atoi(&token[1]) > BLUE_LIMIT) {
-          total -= gnum;
-          break;
-        }
+      if (strstr(token, "blue") && atoi(&token[1]) > BLUE_LIMIT) {
+        total -= gnum;
+        break;
       }
       token = strtok(NULL, delimiters);
     }
