@@ -25,5 +25,5 @@ $ clang -g trebuchet.c
 run the program
 
 ```
-$ ./trebuchet.o
+$ ./a.out
 ```
