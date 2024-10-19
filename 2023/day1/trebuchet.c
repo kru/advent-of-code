@@ -2,53 +2,69 @@
 #include <stdlib.h>
 #include <string.h>
 
+struct Result {
+    int first;
+    int last;
+    int total;
+} Result;
+
+char nums[] = {'0', '1', '2', '3', '4','5','6','7','8','9'};
+
+int n_len = sizeof(nums)/sizeof(nums[0]);
+
+int char_to_int(char x) {
+
+  for (int i = 0; i < n_len; i++) {
+    if ((nums[i] == x) == 1) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 // answer is 55488
 int main() {
-  FILE *f;
+    FILE *f;
 
-  char *content = NULL;
-  int calibration = 0;
-  size_t len = 0;
-  ssize_t read;
+    char *content = NULL;
+    size_t len = 0;
 
-  printf("Hei there, just starting advent of code this year\n");
-
-  f = fopen("2023/day1/input", "r");
-  if (!f) {
-    perror("fopen");
-    return EXIT_FAILURE;
-  }
-
-  while ((read = getline(&content, &len, f)) != -1) {
-    int i = 0, j = strlen(content) - 1;
-    char firstLast[2] = "";
-    while (i <= j) {
-      if (atoi(&content[i]) != 0) {
-        strncat(firstLast, &content[i], 1);
-        break;
-      }
-      i++;
+    f = fopen("input", "r");
+    if (!f) {
+        perror("fopen");
+        return EXIT_FAILURE;
     }
 
-    while (j >= 0) {
-      if (atoi(&content[j]) != 0) {
-        strncat(firstLast, &content[j], 1);
-        break;
-      }
-      j--;
-    }
-    int res = atoi(firstLast);
-    // make sure firstLast is two digits
-    if (sizeof(firstLast) < 2) {
-      perror("something off!");
-      return EXIT_FAILURE;
-    }
-    if (res != 0) {
-      calibration += res;
-    }
-  }
+    struct Result result = Result;
+    result.first = 0;
+    result.last = 0;
+    result.total = 0;
 
-  printf("Result: %d\n", calibration);
-  fclose(f);
-  return EXIT_SUCCESS;
+    while (getline(&content, &len, f) != -1) {
+        // printf("\ncontent: %s\n", content);
+        int i = 0;
+        while (content[i] != '\0') {
+            char c = content[i];
+            int r = char_to_int(c);
+            // printf("idx: %d, %c val: %d \n", i, c, char_to_int(c));
+            if (result.first == 0 && r != -1) {
+                result.first = r;
+            }
+
+            if (r != -1) {
+                result.last = r;
+            }
+            i++;
+        }
+
+        result.total += (result.first * 10) + result.last;
+        // printf("first: %d, last: %d, total: %d\n", result.first, result.last, result.total);
+
+        result.first = 0;
+        result.last = 0;
+    }
+
+    printf("\nResult: %d\n", result.total);
+    fclose(f);
+    return EXIT_SUCCESS;
 }
