@@ -126,5 +126,6 @@ int main() {
     printf("\ntotal: %d\n", total);
     // in mac os to see memory leaks -> ps aux | grep program_name -> leaks program_name
     // fscanf(stdin, "c");
+    fclose(f);
     return EXIT_SUCCESS;
 }
