@@ -13,7 +13,6 @@ char nums[] = {'0', '1', '2', '3', '4','5','6','7','8','9'};
 int n_len = sizeof(nums)/sizeof(nums[0]);
 
 int char_to_int(char x) {
-
   for (int i = 0; i < n_len; i++) {
     if ((nums[i] == x) == 1) {
       return i;
