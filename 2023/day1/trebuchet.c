@@ -1,7 +1,7 @@
+#include "timer.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "timer.h"
 
 struct Result {
     int first;
@@ -11,17 +11,17 @@ struct Result {
 
 const int STR_LEN = 200;
 
-char nums[] = {'0', '1', '2', '3', '4','5','6','7','8','9'};
+char nums[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-int n_len = sizeof(nums)/sizeof(nums[0]);
+int n_len = sizeof(nums) / sizeof(nums[0]);
 
 int char_to_int(char x) {
-  for (int i = 0; i < n_len; i++) {
-    if ((nums[i] == x) == 1) {
-      return i;
+    for (int i = 0; i < n_len; i++) {
+        if ((nums[i] == x) == 1) {
+            return i;
+        }
     }
-  }
-  return -1;
+    return -1;
 }
 
 // answer is 55488
@@ -60,7 +60,8 @@ int main() {
         }
 
         result.total += (result.first * 10) + result.last;
-        // printf("first: %d, last: %d, total: %d\n", result.first, result.last, result.total);
+        // printf("first: %d, last: %d, total: %d\n", result.first, result.last,
+        // result.total);
 
         result.first = 0;
         result.last = 0;
@@ -68,7 +69,7 @@ int main() {
 
     printf("total: %d\n", result.total);
     gettimeofday(&end, NULL);
-    printf("took: %.2f miliseconds\n", time_diff(start, end)/1000);
+    printf("took: %.2f miliseconds\n", time_diff(start, end) / 1000);
     fclose(f);
     return EXIT_SUCCESS;
 }
