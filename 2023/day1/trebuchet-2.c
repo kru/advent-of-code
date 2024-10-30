@@ -1,6 +1,15 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
+#include "timer.h"
+
+// double time_diff(struct timeval start, struct timeval end) {
+//     double start_ms = (double)start.tv_sec * 1000000 + (double)start.tv_usec;
+//     double end_ms = (double)end.tv_sec * 1000000 + (double)end.tv_usec;
+//     return end_ms - start_ms; // Returns difference in microseconds
+// }
 
 char *chars[] = {
     "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
@@ -50,9 +59,13 @@ struct CharNum {
     char str5[5];
 } CharNum;
 
+const int STR_LEN = 200;
+
 // answer 55614
 int main() {
     printf("lets go part two\n");
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
     FILE *f;
     f = fopen("input", "r");
 
@@ -61,17 +74,14 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    char *lineptr = NULL;
-    size_t n = 0;
-    ssize_t read;
-
+    char lineptr[STR_LEN];
     int first = 0;
     int last = 0;
     int total = 0;
 
     struct CharNum *charnum = &CharNum;
-    while ((read = getline(&lineptr, &n, f)) != -1) {
-        printf("lineptr: %s\n", lineptr);
+    while (fgets(lineptr, STR_LEN, f) != NULL) {
+        // printf("%s\n", lineptr);
         int j = strlen(lineptr);
 
         for (int i = 0; i < j; i++) {
@@ -123,9 +133,10 @@ int main() {
         first = 0;
         last = 0;
     }
-    printf("\ntotal: %d\n", total);
-    // in mac os to see memory leaks -> ps aux | grep program_name -> leaks program_name
-    // fscanf(stdin, "c");
+    printf("total: %d\n", total);
+    gettimeofday(&end, NULL);
+    printf("took: %.2f miliseconds\n", time_diff(start, end)/1000);
+    // in mac os to see memory leaks -> leaks -atExit -- ./trebuchet-2
     fclose(f);
     return EXIT_SUCCESS;
 }

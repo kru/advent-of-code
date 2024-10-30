@@ -1,19 +1,24 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+#include "sys/time.h"
+
+#include "timer.h"
 
 #define RED_LIMIT 12
 #define GREEN_LIMIT 13
 #define BLUE_LIMIT 14
 
+const int STR_LEN = 200;
+
 int main(int argc, char *argv[]) {
   puts("Let's go -- day 2 advent of code");
 
-  char *content = NULL;
+  char content[200];
   FILE *f;
-  size_t len = 0;
-  ssize_t read;
+  struct timeval start, end;
 
+  gettimeofday(&start, NULL);
   if (!argv[1]) {
     puts("specify full path file input");
     return 0;
@@ -24,10 +29,11 @@ int main(int argc, char *argv[]) {
     perror("fopen");
     return 1;
   }
+
   const char delimiters[] = ":;,";
   int total = 0;
 
-  while ((read = getline(&content, &len, f)) != -1) {
+  while (fgets(content, STR_LEN, f) != NULL) {
     char *token;
 
     token = strtok(content, delimiters);
@@ -56,7 +62,9 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  gettimeofday(&end, NULL);
   printf("total %d\n", total);
+  printf("took: %.2f miliseconds\n", time_diff(start, end)/1000);
   fclose(f);
   return 0;
 }

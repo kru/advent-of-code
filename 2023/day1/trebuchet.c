@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "timer.h"
 
 struct Result {
     int first;
     int last;
     int total;
 } Result;
+
+const int STR_LEN = 200;
 
 char nums[] = {'0', '1', '2', '3', '4','5','6','7','8','9'};
 
@@ -24,10 +27,10 @@ int char_to_int(char x) {
 // answer is 55488
 int main() {
     FILE *f;
+    char content[STR_LEN];
+    struct timeval start, end;
 
-    char *content = NULL;
-    size_t len = 0;
-
+    gettimeofday(&start, NULL);
     f = fopen("input", "r");
     if (!f) {
         perror("fopen");
@@ -39,7 +42,7 @@ int main() {
     result.last = 0;
     result.total = 0;
 
-    while (getline(&content, &len, f) != -1) {
+    while (fgets(content, STR_LEN, f) != NULL) {
         // printf("\ncontent: %s\n", content);
         int i = 0;
         while (content[i] != '\0') {
@@ -63,7 +66,9 @@ int main() {
         result.last = 0;
     }
 
-    printf("\nResult: %d\n", result.total);
+    printf("total: %d\n", result.total);
+    gettimeofday(&end, NULL);
+    printf("took: %.2f miliseconds\n", time_diff(start, end)/1000);
     fclose(f);
     return EXIT_SUCCESS;
 }

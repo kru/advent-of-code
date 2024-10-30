@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "timer.h"
 
 #define RED_LIMIT 12
 #define GREEN_LIMIT 13
 #define BLUE_LIMIT 14
+
+const int STR_LEN = 200;
 
 int main(int argc, char **argv) {
   puts("day two part two");
@@ -14,10 +17,10 @@ int main(int argc, char **argv) {
   }
 
   FILE *f;
-  char *content = NULL;
-  size_t len = 0;
-  ssize_t read;
+  char content[STR_LEN];
+  struct timeval start, end;
 
+  gettimeofday(&start, NULL);
   f = fopen(argv[1], "r");
 
   if (!f) {
@@ -27,18 +30,13 @@ int main(int argc, char **argv) {
 
   const char delimiters[] = ":;,";
   int total = 0;
-  while ((read = getline(&content, &len, f)) != -1) {
+  while (fgets(content, STR_LEN, f) != NULL) {
     char *token;
 
     token = strtok(content, delimiters);
-    int gnum = 0;
     int minRed = 0, minGreen = 0, minBlue = 0;
 
     while (token != NULL) {
-      if (strstr(token, "Game")) {
-        gnum = atoi(&token[5]);
-      }
-
       if (strstr(token, "red")) {
         int r = atoi(&token[1]);
         if (r > minRed) {
@@ -62,7 +60,10 @@ int main(int argc, char **argv) {
     total += (minRed * minGreen * minBlue);
   }
 
+  gettimeofday(&end, NULL);
+
   printf("total %d\n", total);
   fclose(f);
+  printf("took %.2f miliseconds\n", time_diff(start, end));
   return 0;
 }
